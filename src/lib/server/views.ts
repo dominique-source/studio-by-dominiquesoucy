@@ -2,7 +2,7 @@ import "server-only";
 import { randomUUID } from "crypto";
 import { adminDb } from "@/lib/firebase/admin";
 import { WORKSPACE_ID } from "@/lib/workspace";
-import type { View, ViewItem, Member } from "@/lib/types";
+import type { View, ViewItem, ViewFrame, Member } from "@/lib/types";
 import { can } from "@/lib/server/permissions";
 import { ForbiddenError, VersionConflictError } from "@/lib/server/entities";
 
@@ -16,6 +16,10 @@ function viewsCol() {
 
 function itemsCol(viewId: string) {
   return viewsCol().doc(viewId).collection("items");
+}
+
+function framesCol(viewId: string) {
+  return viewsCol().doc(viewId).collection("frames");
 }
 
 export async function listViews(): Promise<View[]> {
@@ -119,4 +123,66 @@ export async function moveViewItem(
     tx.set(ref, updated);
     return updated;
   });
+}
+
+// --- Cadres visuels (regroupements décoratifs, spec §7) ------------------
+// Purement spatial : aucun droit, aucune donnée métier. Visible à tout membre
+// pouvant voir la vue elle-même.
+
+export async function listViewFrames(viewId: string): Promise<ViewFrame[]> {
+  const snap = await framesCol(viewId).get();
+  return snap.docs.map((d) => d.data() as ViewFrame);
+}
+
+export async function createViewFrame(
+  viewId: string,
+  label: string,
+  rect: { x: number; y: number; width: number; height: number },
+  member: Member
+): Promise<ViewFrame> {
+  const id = randomUUID();
+  const frame: ViewFrame = {
+    id,
+    viewId,
+    label: label.trim() || "Regroupement",
+    x: rect.x,
+    y: rect.y,
+    width: rect.width,
+    height: rect.height,
+    version: 1,
+    updatedAt: new Date().toISOString(),
+    updatedBy: member.id,
+  };
+  await framesCol(viewId).doc(id).set(frame);
+  return frame;
+}
+
+export async function updateViewFrame(
+  viewId: string,
+  frameId: string,
+  patch: Partial<Pick<ViewFrame, "label" | "x" | "y" | "width" | "height">>,
+  expectedVersion: number,
+  member: Member
+): Promise<ViewFrame> {
+  const ref = framesCol(viewId).doc(frameId);
+  return adminDb().runTransaction(async (tx) => {
+    const snap = await tx.get(ref);
+    if (!snap.exists) throw new ForbiddenError();
+    const current = snap.data() as ViewFrame;
+    if (current.version !== expectedVersion) throw new VersionConflictError<ViewFrame>(current);
+    const updated: ViewFrame = {
+      ...current,
+      ...patch,
+      label: patch.label?.trim() || current.label,
+      version: current.version + 1,
+      updatedAt: new Date().toISOString(),
+      updatedBy: member.id,
+    };
+    tx.set(ref, updated);
+    return updated;
+  });
+}
+
+export async function removeViewFrame(viewId: string, frameId: string): Promise<void> {
+  await framesCol(viewId).doc(frameId).delete();
 }

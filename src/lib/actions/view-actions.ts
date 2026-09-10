@@ -2,9 +2,18 @@
 
 import { revalidatePath } from "next/cache";
 import { requireMember } from "@/lib/auth/session";
-import { addViewItem, removeViewItem, moveViewItem, createView } from "@/lib/server/views";
+import {
+  addViewItem,
+  removeViewItem,
+  moveViewItem,
+  createView,
+  createViewFrame,
+  updateViewFrame,
+  removeViewFrame,
+} from "@/lib/server/views";
+import { listEntitiesForMember } from "@/lib/server/entities";
 import { createRelationship, removeRelationship } from "@/lib/server/relationships";
-import type { RelationshipType, View, ViewItem, Relationship } from "@/lib/types";
+import type { RelationshipType, View, ViewItem, ViewFrame, Relationship, EntityKind } from "@/lib/types";
 import type { ActionResult } from "@/lib/actions/entity-actions";
 
 async function authed() {
@@ -55,12 +64,79 @@ export async function moveViewItemAction(
   }
 }
 
-export async function createViewAction(name: string, mode: View["mode"] = "real"): Promise<ActionResult<View>> {
+/**
+ * Crée une vue. Si `filterKinds` est fourni, l'amorce en une fois avec tous
+ * les objets accessibles de ces types (disposition en grille simple) — un
+ * instantané curé, pas une requête vivante : une donnée nouvelle n'apparaît
+ * pas automatiquement (spec §7 : ne pas bouleverser la mémoire spatiale).
+ */
+export async function createViewAction(
+  name: string,
+  mode: View["mode"] = "real",
+  filterKinds?: EntityKind[]
+): Promise<ActionResult<View>> {
   try {
     const member = await authed();
     const view = await createView(name, member, mode);
+    if (filterKinds && filterKinds.length > 0) {
+      const entities = (await listEntitiesForMember(member)).filter(
+        (e) => e.lifecycleState === "active" && filterKinds.includes(e.kind)
+      );
+      const perRow = Math.max(1, Math.ceil(Math.sqrt(entities.length)));
+      await Promise.all(
+        entities.map((entity, i) =>
+          addViewItem(
+            view.id,
+            entity.id,
+            { x: (i % perRow) * 260, y: Math.floor(i / perRow) * 160 },
+            member
+          )
+        )
+      );
+    }
     revalidatePath("/carte");
     return { ok: true, data: view };
+  } catch {
+    return { ok: false, error: "UNKNOWN" };
+  }
+}
+
+export async function createViewFrameAction(
+  viewId: string,
+  label: string,
+  rect: { x: number; y: number; width: number; height: number }
+): Promise<ActionResult<ViewFrame>> {
+  try {
+    const member = await authed();
+    const frame = await createViewFrame(viewId, label, rect, member);
+    revalidatePath("/carte");
+    return { ok: true, data: frame };
+  } catch {
+    return { ok: false, error: "UNKNOWN" };
+  }
+}
+
+export async function updateViewFrameAction(
+  viewId: string,
+  frameId: string,
+  patch: Partial<Pick<ViewFrame, "label" | "x" | "y" | "width" | "height">>,
+  expectedVersion: number
+): Promise<ActionResult<ViewFrame>> {
+  try {
+    const member = await authed();
+    const frame = await updateViewFrame(viewId, frameId, patch, expectedVersion, member);
+    return { ok: true, data: frame };
+  } catch {
+    return { ok: false, error: "CONFLICT" };
+  }
+}
+
+export async function removeViewFrameAction(viewId: string, frameId: string): Promise<ActionResult<null>> {
+  try {
+    await authed();
+    await removeViewFrame(viewId, frameId);
+    revalidatePath("/carte");
+    return { ok: true, data: null };
   } catch {
     return { ok: false, error: "UNKNOWN" };
   }

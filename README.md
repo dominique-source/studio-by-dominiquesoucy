@@ -95,6 +95,20 @@ http://localhost:3000 → redirige vers `/login`.
   ce dernier basé sur une règle déterministe d'échéance dépassée, jamais une
   priorité opaque), **À traiter** (tâches ouvertes réelles ; aucune
   proposition IA simulée).
+- **Regroupements visuels (cadres)** : dessiner, redimensionner, renommer et
+  supprimer des cadres décoratifs sur la carte pour grouper des cartes —
+  aucun effet sur la détention, les rôles ou les droits (spec §7). Persistés
+  et restaurés après rechargement.
+- **Vues enregistrées** : « + Nouvelle vue » (barre latérale) crée une vue
+  nommée, avec amorçage optionnel par type d'objet (instantané une fois, pas
+  une requête vivante — la mémoire spatiale n'est jamais bouleversée par une
+  donnée nouvelle).
+- **Filtre d'affichage** sur la carte (par type d'objet, afficher/masquer les
+  archivés) — purement visuel, ne touche pas les occurrences enregistrées.
+- **Accessibilité clavier** : listes et fiche en éléments sémantiques
+  (`<button>`/`<a>`/`<label>`), focus visible global, cartes et cadres du
+  canevas ont un nom accessible (`ariaLabel`) et restent atteignables sans
+  la carte via la recherche et les listes.
 - **Permissions testées avec un second utilisateur restreint** : compte de
   test avec lecture sur un seul domaine → celui-ci n'apparaît ni dans les
   autres vues, ni dans la recherche, ni dans les changements des autres
@@ -120,6 +134,12 @@ http://localhost:3000 → redirige vers `/login`.
   recherche) : **confirmé**.
 - Persistance après rechargement (Firestore) : **confirmé** (les données
   survivent aux redémarrages du serveur applicatif).
+- Cadre créé, renommé, déplacé/redimensionné, retrouvé identique après
+  rechargement complet de la page : **confirmé**.
+- Vue enregistrée créée avec filtre par type, amorcée avec le bon nombre
+  d'objets : **confirmé**.
+- Filtre d'affichage réduit correctement le nombre de cartes visibles sans
+  toucher aux occurrences enregistrées : **confirmé**.
 - Distinction retrait de vue / archivage : **confirmé** dans l'interface et
   le code serveur (deux commandes distinctes).
 
@@ -132,8 +152,8 @@ http://localhost:3000 → redirige vers `/login`.
 - **Rôles/role_assignments avec UI dédiée** — le champ existe dans le
   schéma ; seule la description libre de Dominique (« Créateur · Propriétaire
   · Connecteur ») est affichée pour l'instant.
-- **Disposition automatique ELK**, cadres visuels (`view_frames`) — schéma
-  prêt, pas d'interface.
+- **Disposition automatique ELK** (placement manuel + cadres manuels
+  seulement pour l'instant).
 - **Export/restauration administrateur**, sauvegardes planifiées.
 - **Finances** (valorisations, détentions, revenus) — délibérément absentes,
   comme l'exige la spec pour la V1.

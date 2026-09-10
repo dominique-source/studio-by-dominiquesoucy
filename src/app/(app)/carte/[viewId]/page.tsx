@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getView, listViewItems } from "@/lib/server/views";
+import { getView, listViewItems, listViewFrames } from "@/lib/server/views";
 import { getEntity } from "@/lib/server/entities";
 import { listRelationshipsForEntities } from "@/lib/server/relationships";
 import { requireMember } from "@/lib/auth/session";
@@ -19,6 +19,7 @@ export default async function CarteViewPage({ params }: { params: Promise<{ view
     await Promise.all(items.map((item) => getEntity(item.entityId, ctx.member)))
   ).filter((e) => e !== null);
   const relationships = await listRelationshipsForEntities(entities.map((e) => e.id), ctx.member);
+  const frames = await listViewFrames(viewId);
 
   return (
     <div className="relative h-full w-full">
@@ -33,7 +34,7 @@ export default async function CarteViewPage({ params }: { params: Promise<{ view
           <AddExistingToView viewId={view.id} />
         </div>
       </div>
-      <MapCanvas view={view} items={items} entities={entities} relationships={relationships} />
+      <MapCanvas view={view} items={items} entities={entities} relationships={relationships} frames={frames} />
     </div>
   );
 }

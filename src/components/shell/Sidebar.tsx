@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { logoutAction } from "@/lib/actions/auth-actions";
+import { CreateViewModal } from "@/components/shell/CreateViewModal";
 
 const primaryNav = [
   { href: "/carte", label: "Carte", icon: GridIcon },
@@ -23,6 +25,7 @@ export function Sidebar({
   onNavigate?: () => void;
 }) {
   const pathname = usePathname();
+  const [createViewOpen, setCreateViewOpen] = useState(false);
   const initials = member.displayName
     .split(" ")
     .map((p) => p[0])
@@ -96,9 +99,20 @@ export function Sidebar({
                 Aucune vue enregistrée
               </p>
             )}
+            <button
+              type="button"
+              onClick={() => setCreateViewOpen(true)}
+              className="flex w-full items-center gap-2.5 rounded px-3 py-2 text-left text-sm transition-colors hover:bg-white/5"
+              style={{ color: "var(--color-sidebar-text-2)" }}
+            >
+              <PlusIcon />
+              Nouvelle vue
+            </button>
           </nav>
         </div>
       </div>
+
+      {createViewOpen && <CreateViewModal onClose={() => setCreateViewOpen(false)} />}
 
       <div className="border-t px-2 pt-3" style={{ borderColor: "var(--color-sidebar-line)" }}>
         <div className="mb-2 flex items-center gap-2.5">
@@ -178,6 +192,13 @@ function MapIcon() {
     <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden>
       <path d="M5.5 2.5L1.8 3.8v9.7l3.7-1.3 4 1.3 4.7-1.6V2.1l-4.7 1.6-4-1.2z" stroke="currentColor" strokeWidth="1.15" strokeLinejoin="round" />
       <path d="M5.5 2.5v9.7M9.5 3.7v9.8" stroke="currentColor" strokeWidth="1.15" />
+    </svg>
+  );
+}
+function PlusIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <path d="M8 2.5v11M2.5 8h11" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
     </svg>
   );
 }

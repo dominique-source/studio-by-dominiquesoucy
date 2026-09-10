@@ -207,6 +207,8 @@ export interface ViewItem {
   updatedBy: string;
 }
 
+/** Cadre visuel : arrangement décoratif pour regrouper des cartes sur la
+ * carte. Aucun effet juridique, organisationnel ou d'accès (spec §7). */
 export interface ViewFrame {
   id: string;
   viewId: string;
@@ -215,6 +217,9 @@ export interface ViewFrame {
   y: number;
   width: number;
   height: number;
+  version: number;
+  updatedAt: string;
+  updatedBy: string;
 }
 
 export type ChangeAction =
