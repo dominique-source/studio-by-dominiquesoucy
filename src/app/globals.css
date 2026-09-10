@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+/*
+  STUDIO DOMINIQUE SOUCY — design tokens.
+  Canevas ivoire, navigation quasi-noire à nuances de vert profond,
+  cartes claires à bordures fines, sélection vert profond / texte crème.
+  Voir docs/design.md pour la référence visuelle.
+*/
+:root {
+  --color-ink: #15150f;
+  --color-sidebar: #10190f;
+  --color-sidebar-2: #182417;
+  --color-sidebar-active: #223f28;
+  --color-sidebar-line: #253226;
+  --color-sidebar-text: #eef0e4;
+  --color-sidebar-text-2: #9aa693;
+
+  --color-canvas: #f5f1e6;
+  --color-canvas-dot: #e0d8c2;
+
+  --color-surface: #fffdf7;
+  --color-surface-2: #f2ede0;
+  --color-surface-border: #e2d9c2;
+
+  --color-text: #17170f;
+  --color-text-2: #56503e;
+  --color-text-3: #8b8670;
+  --color-cream: #f7f3e6;
+
+  --color-accent-green: #1f3d29;
+  --color-accent-green-strong: #16301f;
+  --color-accent-green-tint: #eef1e6;
+
+  --color-domain-purinstinct: #b04f2c;
+  --color-domain-ballers: #b7842a;
+  --color-domain-infive: #56503e;
+  --color-domain-gamification: #1f3d29;
+  --color-domain-default: #56503e;
+
+  --color-warn: #b7842a;
+  --color-danger: #a53d2b;
+  --color-ok: #33643f;
+
+  --radius-card: 4px;
+  --radius-pill: 999px;
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-sidebar: var(--color-sidebar);
+  --color-sidebar-2: var(--color-sidebar-2);
+  --color-sidebar-active: var(--color-sidebar-active);
+  --color-sidebar-line: var(--color-sidebar-line);
+  --color-sidebar-text: var(--color-sidebar-text);
+  --color-sidebar-text-2: var(--color-sidebar-text-2);
+
+  --color-canvas: var(--color-canvas);
+  --color-canvas-dot: var(--color-canvas-dot);
+
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-surface-border: var(--color-surface-border);
+
+  --color-text: var(--color-text);
+  --color-text-2: var(--color-text-2);
+  --color-text-3: var(--color-text-3);
+  --color-cream: var(--color-cream);
+
+  --color-accent-green: var(--color-accent-green);
+  --color-accent-green-strong: var(--color-accent-green-strong);
+  --color-accent-green-tint: var(--color-accent-green-tint);
+
+  --color-domain-purinstinct: var(--color-domain-purinstinct);
+  --color-domain-ballers: var(--color-domain-ballers);
+  --color-domain-infive: var(--color-domain-infive);
+  --color-domain-gamification: var(--color-domain-gamification);
+  --color-domain-default: var(--color-domain-default);
+
+  --color-warn: var(--color-warn);
+  --color-danger: var(--color-danger);
+  --color-ok: var(--color-ok);
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+}
+
+* {
+  border-color: var(--color-surface-border);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.bg-dot-grid {
+  background-image: radial-gradient(var(--color-canvas-dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: -10px -10px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-green);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-accent-green);
+  color: var(--color-cream);
+}
