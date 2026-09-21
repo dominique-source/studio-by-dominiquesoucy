@@ -183,3 +183,65 @@ métier (créer/modifier/archiver un objet, lier deux objets, ajouter/retirer
 d'une vue, déplacer une occurrence, créer une tâche, adopter une décision) —
 chacune vérifie les droits et la version attendue avant d'écrire, et
 journalise l'événement métier correspondant.
+
+---
+
+## Public site — Studio by Dominique Soucy
+
+Everything above documents the **private** internal tool (the login-gated
+canvas at `/carte`, `/personnes`, etc.) — that code is untouched by what
+follows. This section documents the **public** marketing site added on top
+of it, under the `(public)` route group.
+
+### What changed and why
+
+This repository originally had no public-facing content at all: `/`
+unconditionally redirected every visitor to `/login`. Per an explicit
+rebuild request, `/` (and four new routes) now render a public site
+explaining the Studio, its ecosystem of companies, its operating model and
+its philosophy — while the private tool keeps its own routes, auth and
+Firebase-backed data exactly as they were.
+
+### Routes
+
+| Route | Purpose |
+|---|---|
+| `/` | Homepage — the Living Signal hero + selected companies/projects |
+| `/ecosystem` | The Gravity Interface — every project as an orbiting node |
+| `/how-it-works` | The Decision Machine — the six-stage operating model |
+| `/philosophy` | The Thought Field — authored principles and their connections |
+| `/projects/[slug]` | One reusable presentation page per project |
+| `/private` | Explains the Studio's access tiers; links to the existing `/login` |
+
+### Source material
+
+Four approved mockups and one animation kit
+(`Studio_by_Dominique_Soucy_Animation_Kit.zip`, preserved at the repo root)
+were supplied as visual direction. They were extracted into
+`public/assets/studio/` (mockups, film-fragments, electric-signals,
+editorial-marks, storyboard-fragments, signals) — see `ASSET_MANIFEST.md`
+for exactly where each file is used. Nothing was shipped as a full-page
+background image; every visible layer is live HTML/CSS/SVG, per the kit's
+own production rules.
+
+### Key docs
+
+- `ASSET_MANIFEST.md` — where every supplied graphic element is used.
+- `MOTION_SYSTEM.md` — the twelve motion primitives and the six signature
+  interactions.
+- `PROJECT_REGISTRY.md` — the project data schema, and the reasoning behind
+  every status call that wasn't explicitly given.
+- `DEPLOYMENT.md` — exactly what's still needed from Dominique before this
+  goes live.
+- `AUDIT_REPORT.md` — what was broken, what was changed, and what was
+  tested.
+
+### Validating locally
+
+```bash
+npm run lint
+npm run build
+npm run validate:registry   # project registry data checks
+npm run start -- -p 3300 &
+SMOKE_BASE_URL=http://localhost:3300 npm run smoke
+```

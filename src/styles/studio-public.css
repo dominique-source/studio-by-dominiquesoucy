@@ -1,0 +1,113 @@
+/*
+  Studio by Dominique Soucy — public site tokens + motion system.
+  Adapted from studio-animation-kit/03-motion/animation-tokens.css
+  (values kept as supplied; scoped under .studio-public instead of :root
+  so they never leak into the private tool's ivory theme, which shares
+  this same Next.js app).
+*/
+
+.studio-public {
+  --studio-black: #030507;
+  --studio-black-soft: #0a0d12;
+  --studio-white: #f4f7fb;
+  --studio-silver: #a8b2c0;
+  --studio-silver-dim: #6b7480;
+  --studio-blue: #1478ff;
+  --studio-blue-soft: #8cc8ff;
+  --studio-line: rgba(168, 178, 192, 0.18);
+
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-signal: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 240ms;
+  --duration-reveal: 720ms;
+  --duration-portal: 880ms;
+
+  --studio-space-1: 4px;
+  --studio-space-2: 8px;
+  --studio-space-3: 16px;
+  --studio-space-4: 24px;
+  --studio-space-5: 32px;
+  --studio-space-6: 48px;
+  --studio-space-7: 64px;
+  --studio-space-8: 96px;
+  --studio-space-9: 128px;
+
+  background: var(--studio-black);
+  color: var(--studio-white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.studio-public :focus-visible {
+  outline: 2px solid var(--studio-blue);
+  outline-offset: 3px;
+}
+
+@keyframes signal-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes signal-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    filter: drop-shadow(0 0 4px var(--studio-blue));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 18px var(--studio-blue-soft));
+  }
+}
+
+@keyframes fragment-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--from-x, 0), var(--from-y, 28px), 0) rotate(var(--from-r, -2deg)) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(var(--to-r, 0deg)) scale(1);
+  }
+}
+
+@keyframes portal-open {
+  from {
+    clip-path: circle(0% at var(--portal-x, 50%) var(--portal-y, 50%));
+  }
+  to {
+    clip-path: circle(150% at var(--portal-x, 50%) var(--portal-y, 50%));
+  }
+}
+
+.studio-public .signal-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: signal-draw var(--duration-portal) var(--ease-cinematic) forwards;
+}
+
+.studio-public .signal-node {
+  animation: signal-pulse 2.4s var(--ease-signal) infinite;
+}
+
+.studio-public .fragment {
+  animation: fragment-enter var(--duration-reveal) var(--ease-cinematic) both;
+}
+
+.studio-public .portal {
+  animation: portal-open var(--duration-portal) var(--ease-cinematic) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .studio-public *,
+  .studio-public *::before,
+  .studio-public *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

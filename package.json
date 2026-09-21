@@ -10,7 +10,8 @@
     "emulators": "firebase emulators:start --project studio-dev",
     "seed": "tsx scripts/seed.ts",
     "seed:prod": "tsx scripts/seed.ts --prod",
-    "smoke": "tsx scripts/smoke.ts"
+    "smoke": "tsx scripts/smoke.ts",
+    "validate:registry": "tsx scripts/validate-registry.ts"
   },
   "dependencies": {
     "@xyflow/react": "^12.11.6",
