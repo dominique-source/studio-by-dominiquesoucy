@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { clientAuth } from "@/lib/firebase/client";
+import { clientAuth, firebaseInitError } from "@/lib/firebase/client";
 
 export function LoginForm() {
   const router = useRouter();
@@ -12,12 +12,33 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  if (!clientAuth) {
+    if (firebaseInitError) {
+      console.error("Firebase client init failed:", firebaseInitError);
+    }
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-dot-grid" style={{ background: "var(--color-canvas)" }}>
+        <div className="w-full max-w-sm rounded-[var(--radius-card)] border border-[var(--color-surface-border)] bg-[var(--color-surface)] p-6 text-center shadow-sm">
+          <p className="font-display text-2xl font-black tracking-tight text-[var(--color-text)]">STUDIO</p>
+          <p className="mt-4 text-sm text-[var(--color-text-2)]">
+            L&apos;authentification est temporairement indisponible.
+          </p>
+          <p className="mt-2 text-xs text-[var(--color-text-3)]">
+            Réessayez plus tard, ou contactez Dominique si le problème persiste.
+          </p>
+        </div>
+      </main>
+    );
+  }
+
+  const auth = clientAuth;
+
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     setError(null);
     setLoading(true);
     try {
-      const credential = await signInWithEmailAndPassword(clientAuth, email, password);
+      const credential = await signInWithEmailAndPassword(auth, email, password);
       const idToken = await credential.user.getIdToken();
       const response = await fetch("/api/auth/session", {
         method: "POST",

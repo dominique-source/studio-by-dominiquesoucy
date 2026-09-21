@@ -9,7 +9,8 @@
     "lint": "eslint",
     "emulators": "firebase emulators:start --project studio-dev",
     "seed": "tsx scripts/seed.ts",
-    "seed:prod": "tsx scripts/seed.ts --prod"
+    "seed:prod": "tsx scripts/seed.ts --prod",
+    "smoke": "tsx scripts/smoke.ts"
   },
   "dependencies": {
     "@xyflow/react": "^12.11.6",
