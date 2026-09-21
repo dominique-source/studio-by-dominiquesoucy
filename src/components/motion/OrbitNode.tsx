@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react";
 import type { Project } from "@/data/projects";
 import { STATUS_LABEL } from "@/data/projects";
+import { DisplayText } from "./DisplayText";
 
 // One project node inside the Gravity Interface. Visual weight (size,
 // brightness, interactivity) comes from the project's own status —
@@ -24,6 +25,9 @@ export function OrbitNode({
 }) {
   const brightness = BRIGHTNESS[project.status];
   const size = 10 + project.visualWeight * 6;
+  // The full catalog reads as silver signals of the Studio, not blue —
+  // blue stays reserved for Instinct Studio and for relationship lines.
+  const color = project.accentColor === "var(--studio-blue)" ? "var(--studio-blue)" : "var(--studio-silver)";
 
   return (
     <button
@@ -32,7 +36,7 @@ export function OrbitNode({
       className="group absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2 transition-[opacity,transform] duration-500"
       style={{
         ...style,
-        opacity: dimmed ? 0.28 : brightness,
+        opacity: dimmed ? 0.22 : brightness,
         transitionTimingFunction: "var(--ease-cinematic)",
       }}
       aria-label={`${project.title} — ${STATUS_LABEL[project.status]}${visited ? ", already viewed" : ""}`}
@@ -42,9 +46,9 @@ export function OrbitNode({
         style={{
           width: size,
           height: size,
-          background: project.status === "FUTURE" ? "transparent" : "var(--studio-blue)",
-          border: project.status === "FUTURE" ? "1px solid var(--studio-blue)" : undefined,
-          boxShadow: `0 0 ${8 + project.visualWeight * 6}px rgba(20, 120, 255, ${brightness * 0.7})`,
+          background: project.status === "FUTURE" ? "transparent" : color,
+          border: project.status === "FUTURE" ? `1px solid ${color}` : undefined,
+          boxShadow: `0 0 ${6 + project.visualWeight * 4}px ${color}66`,
         }}
       >
         {visited && (
@@ -56,10 +60,10 @@ export function OrbitNode({
         )}
       </span>
       <span
-        className="max-w-[92px] text-center font-display text-[10px] uppercase leading-tight tracking-[0.1em] transition-opacity group-hover:opacity-100"
+        className="max-w-[92px] text-center font-display text-[10px] leading-tight tracking-[0.1em] transition-opacity group-hover:opacity-100"
         style={{ color: "var(--studio-silver)", opacity: project.visualWeight >= 2 ? 0.9 : 0.55 }}
       >
-        {project.title}
+        <DisplayText>{project.title.toUpperCase()}</DisplayText>
       </span>
     </button>
   );

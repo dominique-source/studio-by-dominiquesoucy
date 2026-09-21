@@ -1,20 +1,41 @@
 /*
   Studio by Dominique Soucy — public site tokens + motion system.
-  Adapted from studio-animation-kit/03-motion/animation-tokens.css
-  (values kept as supplied; scoped under .studio-public instead of :root
-  so they never leak into the private tool's ivory theme, which shares
-  this same Next.js app).
+
+  Brand correction: the animation kit's own tokens named their primary
+  color `--studio-blue` and it was previously applied everywhere —
+  nucleus, every node, every accent. That made the parent Studio
+  indistinguishable from Instinct Studio, one company inside it. The
+  parent identity is now deep black / mineral white / silver, with a
+  controlled solar amber reserved for the Studio's own source/nucleus.
+  Blue is kept, but scoped to two things only: Instinct Studio's own
+  brand accent, and the relationship signal lines between the nucleus
+  and a selected company. Every other company gets its own accent
+  (reusing the private tool's existing domain-accent palette in
+  src/app/globals.css, for one consistent brand across both apps).
 */
 
 .studio-public {
   --studio-black: #030507;
-  --studio-black-soft: #0a0d12;
-  --studio-white: #f4f7fb;
-  --studio-silver: #a8b2c0;
-  --studio-silver-dim: #6b7480;
+  --studio-black-soft: #0d0f13;
+  --studio-white: #f1efe9;
+  --studio-silver: #b7b2a8;
+  --studio-silver-dim: #7a766d;
+  --studio-line: rgba(241, 239, 233, 0.14);
+
+  /* The Studio's own signature — the source, not a company. */
+  --studio-gold: #d9a441;
+  --studio-gold-soft: #f0c878;
+
+  /* Reserved for relationships and for Instinct Studio specifically. */
   --studio-blue: #1478ff;
   --studio-blue-soft: #8cc8ff;
-  --studio-line: rgba(168, 178, 192, 0.18);
+
+  /* Per-company accents (matching the private tool's domain colors). */
+  --studio-accent-purinstinct: #c2653a;
+  --studio-accent-ballers: #b7842a;
+  --studio-accent-infive: #4d7a78;
+  --studio-accent-instinct-studio: #1478ff;
+  --studio-accent-5dathlete: #3c6e55;
 
   --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-signal: cubic-bezier(0.65, 0, 0.35, 1);
@@ -39,8 +60,26 @@
 }
 
 .studio-public :focus-visible {
-  outline: 2px solid var(--studio-blue);
+  outline: 2px solid var(--studio-gold);
   outline-offset: 3px;
+}
+
+/*
+  Root cause of the previous serif regression: globals.css defines the
+  Tailwind `font-display` utility as `font-family: var(--font-fraunces)`
+  globally (for the private tool). Every public component using
+  `font-display` was silently rendering in Fraunces as a result. This
+  rule wins on specificity (.studio-public .font-display vs Tailwind's
+  bare .font-display) without touching the private tool's mapping at all.
+*/
+.studio-public .font-display {
+  font-family: var(--font-display-condensed), sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* The handwritten editorial annotation accent — never used for titles. */
+.studio-public .font-hand {
+  font-family: var(--font-hand), cursive;
 }
 
 @keyframes signal-draw {
@@ -56,11 +95,11 @@
   0%,
   100% {
     opacity: 0.45;
-    filter: drop-shadow(0 0 4px var(--studio-blue));
+    filter: drop-shadow(0 0 4px var(--pulse-color, var(--studio-blue)));
   }
   50% {
     opacity: 1;
-    filter: drop-shadow(0 0 18px var(--studio-blue-soft));
+    filter: drop-shadow(0 0 18px var(--pulse-color-soft, var(--studio-blue-soft)));
   }
 }
 

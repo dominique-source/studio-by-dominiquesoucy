@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { PROJECTS, getProjectBySlug, getRelatedProjects, STATUS_LABEL } from "@/data/projects";
 import { LayeredArtwork } from "@/components/motion/LayeredArtwork";
+import { PurinstinctPortal } from "@/components/public/PurinstinctPortal";
 import { MagneticCTA } from "@/components/motion/MagneticCTA";
 
 export function generateStaticParams() {
@@ -24,10 +25,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   if (!project || !project.visibility) notFound();
 
   const related = getRelatedProjects(project);
+  const isPurinstinct = project.slug === "purinstinct";
 
   return (
     <main className="px-6 pb-24 pt-28 sm:px-10 sm:pt-32">
-      <div className="mx-auto max-w-3xl">
+      <div className={isPurinstinct ? "mx-auto max-w-5xl" : "mx-auto max-w-3xl"}>
         <Link
           href="/ecosystem"
           className="font-mono text-xs uppercase tracking-[0.14em] underline underline-offset-4"
@@ -37,10 +39,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         </Link>
 
         <div className="mt-8">
-          <LayeredArtwork project={project} />
+          {isPurinstinct ? <PurinstinctPortal /> : <LayeredArtwork project={project} />}
         </div>
 
-        <dl className="mt-10 grid grid-cols-2 gap-x-8 gap-y-4 border-t pt-6 text-sm sm:grid-cols-4" style={{ borderColor: "var(--studio-line)" }}>
+        <dl
+          className="mt-10 grid grid-cols-2 gap-x-8 gap-y-4 border-t pt-6 text-sm sm:grid-cols-4"
+          style={{ borderColor: "var(--studio-line)", display: isPurinstinct ? "none" : undefined }}
+        >
           <div>
             <dt className="font-mono text-[10px] uppercase tracking-[0.16em]" style={{ color: "var(--studio-silver-dim)" }}>
               Category
@@ -106,17 +111,19 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           </div>
         )}
 
-        <div className="mt-10 flex flex-wrap items-center gap-4">
-          {project.officialUrl ? (
-            <MagneticCTA href={project.officialUrl}>{project.ctaLabel} →</MagneticCTA>
-          ) : project.accessLevel === "preview" ? (
-            <MagneticCTA href="/private">{project.ctaLabel} →</MagneticCTA>
-          ) : (
-            <MagneticCTA href="/ecosystem" variant="secondary">
-              {project.ctaLabel} →
-            </MagneticCTA>
-          )}
-        </div>
+        {!isPurinstinct && (
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            {project.officialUrl ? (
+              <MagneticCTA href={project.officialUrl}>{project.ctaLabel} →</MagneticCTA>
+            ) : project.accessLevel === "preview" ? (
+              <MagneticCTA href="/private">{project.ctaLabel} →</MagneticCTA>
+            ) : (
+              <MagneticCTA href="/ecosystem" variant="secondary">
+                {project.ctaLabel} →
+              </MagneticCTA>
+            )}
+          </div>
+        )}
       </div>
     </main>
   );

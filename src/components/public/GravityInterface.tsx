@@ -7,6 +7,7 @@ import { OrbitNode } from "@/components/motion/OrbitNode";
 import { SignalPulse } from "@/components/motion/SignalPulse";
 import { ProjectPortal } from "@/components/motion/ProjectPortal";
 import { MemoryTrace } from "@/components/motion/MemoryTrace";
+import { DisplayText } from "@/components/motion/DisplayText";
 import { useMemoryTrace } from "@/lib/motion/useMemoryTrace";
 import { STATUS_LABEL } from "@/data/projects";
 
@@ -108,8 +109,8 @@ export function GravityInterface() {
             >
               <span>
                 <span className="flex items-center gap-2">
-                  <span className="font-display text-base font-black uppercase tracking-tight" style={{ color: "var(--studio-white)" }}>
-                    {project.title}
+                  <span className="font-display text-base font-black tracking-tight" style={{ color: "var(--studio-white)" }}>
+                    <DisplayText>{project.title.toUpperCase()}</DisplayText>
                   </span>
                   <MemoryTrace visited={visited.has(project.slug)} />
                 </span>

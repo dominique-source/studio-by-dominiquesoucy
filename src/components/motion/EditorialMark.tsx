@@ -1,43 +1,40 @@
 "use client";
 
-import { TextureWindow } from "./TextureWindow";
+import { TextureWindow, type SpriteRect } from "./TextureWindow";
 
 const SHEET = "/assets/studio/editorial-marks/editorial-marks-transparent.png";
+const CELL_W = 512;
+const CELL_H = 341;
 
-// Cropped windows into the editorial-marks sprite sheet — the hand-drawn
-// arrows, circles and brackets used as annotation accents. Names describe
-// the mark, not its screen position.
-const VARIANTS = {
-  arrowRight: "8% 12%",
-  circle: "50% 12%",
-  question: "92% 12%",
-  cross: "8% 50%",
-  underline: "50% 48%",
-  brackets: "92% 48%",
-  orbit: "8% 88%",
-  swoosh: "50% 85%",
-  arrowUpRight: "92% 88%",
-} as const;
+// The sheet is a clean 3x3 grid of hand-drawn marks.
+const VARIANTS: Record<string, SpriteRect> = {
+  arrowRight: { x: 0, y: 0, width: CELL_W, height: CELL_H },
+  circle: { x: CELL_W, y: 0, width: CELL_W, height: CELL_H },
+  question: { x: CELL_W * 2, y: 0, width: CELL_W, height: CELL_H },
+  cross: { x: 0, y: CELL_H, width: CELL_W, height: CELL_H },
+  underline: { x: CELL_W, y: CELL_H, width: CELL_W, height: CELL_H },
+  brackets: { x: CELL_W * 2, y: CELL_H, width: CELL_W, height: CELL_H },
+  orbit: { x: 0, y: CELL_H * 2, width: CELL_W, height: CELL_H },
+  swoosh: { x: CELL_W, y: CELL_H * 2, width: CELL_W, height: CELL_H },
+  arrowUpRight: { x: CELL_W * 2, y: CELL_H * 2, width: CELL_W, height: CELL_H },
+};
 
 export function EditorialMark({
   variant,
-  width = 96,
-  height = 64,
+  displayWidth = 110,
   rotate = 0,
   className,
 }: {
   variant: keyof typeof VARIANTS;
-  width?: number;
-  height?: number;
+  displayWidth?: number;
   rotate?: number;
   className?: string;
 }) {
   return (
     <TextureWindow
       src={SHEET}
-      objectPosition={VARIANTS[variant]}
-      width={width}
-      height={height}
+      rect={VARIANTS[variant]}
+      displayWidth={displayWidth}
       rotate={rotate}
       className={className}
     />

@@ -1,4 +1,4 @@
-import { DecisionMachine } from "@/components/public/DecisionMachine";
+import { ProcessAssembly } from "@/components/public/ProcessAssembly";
 
 export const metadata = {
   title: "How It Works — Studio by Dominique Soucy",
@@ -7,12 +7,12 @@ export const metadata = {
 
 export default function HowItWorksPage() {
   return (
-    <main className="px-6 pb-24 pt-28 sm:px-10 sm:pt-32">
-      <div className="mx-auto max-w-3xl">
+    <main className="pb-24 pt-28 sm:pt-32">
+      <div className="mx-auto max-w-3xl px-6 sm:px-10">
         <p className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: "var(--studio-blue-soft)" }}>
           How it works
         </p>
-        <h1 className="mt-3 font-display text-4xl font-black uppercase leading-[0.95] sm:text-6xl" style={{ color: "var(--studio-white)" }}>
+        <h1 className="mt-3 font-display text-4xl uppercase leading-[0.88] sm:text-6xl md:text-7xl" style={{ color: "var(--studio-white)" }}>
           From instinct
           <br />
           to company.
@@ -22,8 +22,8 @@ export default function HowItWorksPage() {
         </p>
       </div>
 
-      <div className="mx-auto mt-14 max-w-3xl">
-        <DecisionMachine />
+      <div className="mt-14">
+        <ProcessAssembly />
       </div>
     </main>
   );

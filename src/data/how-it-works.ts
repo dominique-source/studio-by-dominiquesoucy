@@ -1,5 +1,7 @@
-// The Decision Machine — six authored stages. Copy follows the Studio
-// brief exactly; nothing here is generated.
+// The seven-step sequence from the approved reference (page2.png /
+// "03-how-it-works-maquette.png") — not the six-stage abstraction used in
+// the previous, unfaithful build. Copy follows the reference and the
+// Studio brief exactly.
 
 export interface Stage {
   id: string;
@@ -11,35 +13,16 @@ export interface Stage {
 }
 
 export const STAGES: Stage[] = [
-  {
-    id: "instinct",
-    number: "01",
-    title: "Instinct",
-    description: "Creates vibration. A raw reaction to something in sport that isn't working, or isn't there yet.",
-  },
-  {
-    id: "idea",
-    number: "02",
-    title: "Idea",
-    description: "Creates direction. The instinct becomes a specific, arguable point of view.",
-  },
-  {
-    id: "prototype",
-    number: "03",
-    title: "Prototype",
-    description: "Creates form. We build the first working version — not a deck, a real thing people can use.",
-  },
-  {
-    id: "company",
-    number: "04",
-    title: "Company",
-    description: "Creates a working structure. The prototype earns the operations, roles and discipline of a company.",
-  },
+  { id: "idea", number: "01", title: "Idea", description: "Big questions. Real opportunities." },
+  { id: "pitch", number: "02", title: "Pitch", description: "Sport can do more." },
+  { id: "prototype", number: "03", title: "Prototype", description: "Learn from real use." },
+  { id: "prove", number: "04", title: "Prove", description: "Real users. Real data." },
+  { id: "monetize", number: "05", title: "Monetize", description: "Product. Users. Revenue. Impact." },
   {
     id: "ceo",
-    number: "05",
-    title: "CEO",
-    description: "Gives the project autonomous movement.",
+    number: "06",
+    title: "Find the CEO",
+    description: "Right person. Bigger possible.",
     details: [
       "Each company has its own CEO.",
       "The CEO runs their company freely.",
@@ -50,10 +33,5 @@ export const STAGES: Stage[] = [
       "Studio companies help each other with expertise, relationships and resources.",
     ],
   },
-  {
-    id: "growth",
-    number: "06",
-    title: "Growth",
-    description: "Reconnects the project's value to the Studio ecosystem. A stronger company strengthens the whole Studio.",
-  },
+  { id: "grow", number: "07", title: "Grow Together", description: "A brighter tomorrow." },
 ];

@@ -3,26 +3,36 @@
 import { useState } from "react";
 import { THOUGHTS, type Thought } from "@/data/philosophy";
 import { ThoughtConnection } from "@/components/motion/ThoughtConnection";
+import { FilmFragment } from "@/components/motion/FilmFragment";
+import { EditorialMark } from "@/components/motion/EditorialMark";
 import { useInView } from "@/lib/motion/useInView";
 import { usePrefersReducedMotion } from "@/lib/motion/usePrefersReducedMotion";
+
+// Two thoughts carry supporting texture, so the field reads as authored
+// and physical rather than independent text blocks.
+const TEXTURE_BY_ID: Record<string, "floodlights" | "glassShard"> = {
+  "sport-is-art": "floodlights",
+  "build-first": "glassShard",
+};
 
 // Authored coordinates (not computed) placing each thought so the
 // connection chain reads as one flowing path across the field.
 const POSITIONS: Record<string, { x: number; y: number }> = {
-  "sport-is-art": { x: 10, y: 10 },
-  "played-not-watched": { x: 40, y: 6 },
-  "participation-over-spectatorship": { x: 68, y: 16 },
-  "communication-tool": { x: 88, y: 34 },
-  "human-behavior": { x: 68, y: 52 },
-  "build-first": { x: 40, y: 58 },
-  "studio-gives-room": { x: 14, y: 66 },
-  "protects-philosophy": { x: 12, y: 88 },
-  "value-before-layers": { x: 44, y: 92 },
-  "stronger-together": { x: 76, y: 84 },
+  "sport-is-art": { x: 9, y: 8 },
+  "played-not-watched": { x: 40, y: 4 },
+  "participation-over-spectatorship": { x: 71, y: 10 },
+  "communication-tool": { x: 90, y: 32 },
+  "human-behavior": { x: 62, y: 40 },
+  "build-first": { x: 33, y: 68 },
+  "studio-gives-room": { x: 9, y: 78 },
+  "protects-philosophy": { x: 9, y: 96 },
+  "value-before-layers": { x: 46, y: 100 },
+  "stronger-together": { x: 80, y: 78 },
 };
 
 function ThoughtCard({ thought, active, onHover }: { thought: Thought; active: boolean; onHover: (id: string | null) => void }) {
   const pos = POSITIONS[thought.id];
+  const texture = TEXTURE_BY_ID[thought.id];
   return (
     <button
       type="button"
@@ -33,7 +43,12 @@ function ThoughtCard({ thought, active, onHover }: { thought: Thought; active: b
       className="absolute max-w-[220px] -translate-x-1/2 -translate-y-1/2 text-left transition-opacity duration-300"
       style={{ left: `${pos.x}%`, top: `${pos.y}%`, opacity: active ? 1 : 0.72 }}
     >
-      <p className="font-display text-base font-black uppercase leading-tight sm:text-lg" style={{ color: "var(--studio-white)" }}>
+      {texture && (
+        <div className="mb-2 overflow-hidden border" style={{ borderColor: "var(--studio-line)" }}>
+          <FilmFragment variant={texture} displayWidth={180} />
+        </div>
+      )}
+      <p className="font-display text-base uppercase leading-tight sm:text-lg" style={{ color: "var(--studio-white)" }}>
         {thought.phrase}
       </p>
       <p
@@ -61,7 +76,7 @@ export function ThoughtField() {
     <div ref={ref}>
       {/* Desktop: the connected field. */}
       <div
-        className="relative hidden aspect-[16/11] w-full transition-opacity duration-700 md:block"
+        className="relative hidden aspect-[16/14] w-full pb-16 transition-opacity duration-700 md:block"
         style={{ opacity: revealed ? 1 : 0 }}
       >
         <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -84,6 +99,21 @@ export function ThoughtField() {
             onHover={setHovered}
           />
         ))}
+
+        {/* The field's central physical anchor — every principle radiates
+            from one object, echoing the reference's centered ball. */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" aria-hidden="true">
+          <div
+            className="h-24 w-24 rounded-full"
+            style={{
+              background: "radial-gradient(circle at 35% 30%, var(--studio-gold-soft), var(--studio-gold) 45%, #4a3210 100%)",
+              boxShadow: "0 0 50px rgba(217,164,65,0.35)",
+            }}
+          />
+        </div>
+        <div className="absolute left-[54%] top-[46%] opacity-60" aria-hidden="true">
+          <EditorialMark variant="orbit" displayWidth={90} />
+        </div>
       </div>
 
       {/* Mobile: a readable authored sequence, same content, no field. */}

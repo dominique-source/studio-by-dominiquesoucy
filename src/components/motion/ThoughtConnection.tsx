@@ -22,10 +22,9 @@ export function ThoughtConnection({
       d={d}
       pathLength={1}
       fill="none"
-      stroke="var(--studio-blue)"
-      strokeWidth={0.25}
-      vectorEffect="non-scaling-stroke"
-      opacity={active ? 0.75 : 0}
+      stroke="var(--studio-blue-soft)"
+      strokeWidth={0.35}
+      opacity={active ? 0.85 : 0}
       className={active ? "signal-path" : undefined}
       style={{
         transition: "opacity 600ms var(--ease-cinematic)",

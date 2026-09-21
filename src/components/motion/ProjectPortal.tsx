@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { Project } from "@/data/projects";
 import { getRelatedProjects } from "@/data/projects";
 import { LayeredArtwork } from "./LayeredArtwork";
+import { PurinstinctPortal } from "@/components/public/PurinstinctPortal";
 import { MagneticCTA } from "./MagneticCTA";
 import { usePrefersReducedMotion } from "@/lib/motion/usePrefersReducedMotion";
 
@@ -72,10 +73,13 @@ export function ProjectPortal({
         </div>
 
         <div className="mt-12 sm:mt-16">
-          <LayeredArtwork project={project} />
+          {project.slug === "purinstinct" ? <PurinstinctPortal /> : <LayeredArtwork project={project} />}
         </div>
 
-        <dl className="fragment relative z-10 mt-10 grid grid-cols-2 gap-x-8 gap-y-4 border-t pt-6 text-sm sm:grid-cols-4" style={{ animationDelay: "480ms", borderColor: "var(--studio-line)" }}>
+        <dl
+          className="fragment relative z-10 mt-10 grid grid-cols-2 gap-x-8 gap-y-4 border-t pt-6 text-sm sm:grid-cols-4"
+          style={{ animationDelay: "480ms", borderColor: "var(--studio-line)", display: project.slug === "purinstinct" ? "none" : undefined }}
+        >
           <div>
             <dt className="font-mono text-[10px] uppercase tracking-[0.16em]" style={{ color: "var(--studio-silver-dim)" }}>
               Category
@@ -130,7 +134,7 @@ export function ProjectPortal({
         )}
 
         <div className="fragment relative z-10 mt-10 flex flex-wrap items-center gap-4" style={{ animationDelay: "640ms" }}>
-          {project.officialUrl ? (
+          {project.slug === "purinstinct" ? null : project.officialUrl ? (
             <MagneticCTA href={project.officialUrl}>
               {project.ctaLabel} →
             </MagneticCTA>
