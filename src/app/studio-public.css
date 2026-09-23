@@ -26,6 +26,19 @@
   font-family: var(--font-inter), system-ui, sans-serif;
 }
 
+/*
+  The authenticated app's own body background is a warm cream
+  (--color-canvas, #f5f1e6 — its light-mode canvas). .studio-public only
+  paints black on <main>, so any sub-pixel rounding gap around a clipped,
+  rotated, or aspect-ratio-boxed element on a public page let that cream
+  peek through as a visible hairline. Flipping body's own background
+  whenever a .studio-public page is mounted removes the mismatch at the
+  source instead of chasing individual gaps.
+*/
+body:has(.studio-public) {
+  background: var(--studio-black);
+}
+
 .font-studio-display {
   font-family: var(--font-anton), "Arial Narrow", sans-serif;
   text-transform: uppercase;

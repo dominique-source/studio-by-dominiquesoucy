@@ -49,11 +49,6 @@ export function PhilosophyView() {
   return (
     <main className="studio-public relative min-h-screen overflow-x-clip">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_60%_35%,rgba(20,120,255,0.14),transparent_60%)]" />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-[0.16] mix-blend-screen"
-        style={{ backgroundImage: "url(/studio-kit/raster/film-fragments-transparent.png)" }}
-      />
 
       <PublicNav active="/philosophy" />
 

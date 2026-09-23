@@ -23,11 +23,6 @@ export function PublicLanding() {
   return (
     <main className="studio-public relative min-h-screen overflow-x-clip">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_75%_35%,rgba(20,120,255,0.10),transparent_55%)]" />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-[0.12] mix-blend-screen"
-        style={{ backgroundImage: "url(/studio-kit/raster/film-fragments-transparent.png)" }}
-      />
 
       {/* scattered editorial marginalia — text only, no raster cropping */}
       <p className="fragment absolute left-3 top-24 hidden -rotate-3 text-[11px] font-semibold uppercase tracking-wide text-white/35 sm:block" style={{ animationDelay: "620ms" }}>

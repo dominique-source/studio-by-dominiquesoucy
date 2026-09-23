@@ -84,8 +84,20 @@
   --font-sans: var(--font-inter);
 }
 
-* {
-  border-color: var(--color-surface-border);
+/*
+  Tailwind's own preflight ships this exact default-border-color reset
+  inside @layer base, specifically so utility classes like border-white/10
+  (which live in @layer utilities) can still override it. Written as a bare
+  unlayered rule, it silently wins over EVERY border-color utility site-wide
+  regardless of specificity, since per the CSS cascade-layers spec unlayered
+  styles always beat layered ones — this was overriding every border-*
+  color utility on the new public pages with this cream, light-app-only
+  tone instead of the color each component actually asked for.
+*/
+@layer base {
+  * {
+    border-color: var(--color-surface-border);
+  }
 }
 
 html,

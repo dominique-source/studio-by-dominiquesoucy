@@ -40,11 +40,6 @@ export function PurinstinctPortalView() {
   return (
     <main className="studio-public relative min-h-screen overflow-x-clip">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,rgba(20,120,255,0.16),transparent_60%)]" />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-[0.14] mix-blend-screen"
-        style={{ backgroundImage: "url(/studio-kit/raster/electric-signals-transparent.png)" }}
-      />
 
       {/* portal chrome — this page reads as an overlay opened from the
           ecosystem map, not a top-level nav destination */}
