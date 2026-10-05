@@ -13,6 +13,8 @@
   --studio-silver: #a8b2c0;
   --studio-blue: #1478ff;
   --studio-blue-soft: #8cc8ff;
+  --studio-gold: #d9a441;
+  --studio-gold-soft: #f0cd85;
   --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-signal: cubic-bezier(0.65, 0, 0.35, 1);
   --duration-fast: 240ms;
@@ -24,6 +26,21 @@
   background: var(--studio-black);
   color: var(--studio-white);
   font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+/*
+  Per the Oct 2026 brief + reference mockups, the Studio-level accent is
+  warm gold/amber, not the animation kit's blue. Rather than rewrite every
+  component that already reads var(--studio-blue)/var(--studio-blue-soft)
+  (Nucleus, PhotoSlot, signal-path/signal-node), this modifier re-points
+  those same two variables to gold within its own scope. The four pages
+  built against the kit's blue system (/, /ecosystem, /how-it-works,
+  /philosophy, /purinstinct) don't carry this class and render exactly as
+  before.
+*/
+.studio-public--gold {
+  --studio-blue: var(--studio-gold);
+  --studio-blue-soft: var(--studio-gold-soft);
 }
 
 /*
