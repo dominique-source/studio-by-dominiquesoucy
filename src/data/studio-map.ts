@@ -123,7 +123,7 @@ export const STUDIO_NODES: StudioNode[] = [
       "Communauté, jeunesse, culture autour du basketball — pas une nouvelle discipline, une nouvelle façon d'appartenir au jeu.",
     heroImage: "/studio-map/ballers-only.png",
     angleDeg: 45,
-    href: null,
+    href: "/ballers-only",
   },
   {
     slug: "gamification",
@@ -137,7 +137,7 @@ export const STUDIO_NODES: StudioNode[] = [
       "Rendre le sport physique aussi engageant qu'un bon jeu vidéo — par la technologie qui fait bouger, pas par les écrans.",
     heroImage: null,
     angleDeg: 135,
-    href: null,
+    href: "/gamification",
   },
   {
     slug: "instinct-studio",
